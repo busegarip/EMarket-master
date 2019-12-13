@@ -14,6 +14,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using EMarket.Infrastructure.Data;
 using EMarket.ApplicationCore.Entities;
+using EMarket.ApplicationCore.Interfaces;
+using EMarket.ApplicationCore.Services;
 
 namespace EMarket.Web
 {
@@ -43,6 +45,9 @@ namespace EMarket.Web
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+            services.AddScoped<ICategoryService, CategoryService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
