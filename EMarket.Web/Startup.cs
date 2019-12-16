@@ -44,7 +44,8 @@ namespace EMarket.Web
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped<ICategoryService, CategoryService>();
@@ -55,6 +56,14 @@ namespace EMarket.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            //using (var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())//son haline güncellemek için
+            //{
+            //    using (var db = scope.ServiceProvider.GetService<ApplicationDbContext>())
+            //    {
+            //        db.Database.Migrate();//son haline migrate ettiriyor yoksa database oluşturur
+            //    }
+            //}
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
