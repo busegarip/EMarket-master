@@ -8,7 +8,6 @@ using EMarket.Web.Models;
 using EMarket.ApplicationCore.Interfaces;
 using EMarket.Web.Interfaces;
 using Microsoft.AspNetCore.Http;
-using EMarket.Web.Extensions;
 
 namespace EMarket.Web.Controllers
 {
@@ -22,17 +21,19 @@ namespace EMarket.Web.Controllers
         public IActionResult Index(int? cid, int? p)
         {
             //HttpContext.Session.SetString("ad", "ali");
-            List<string> adlar = new List<string> { "ali", "veli" };
+            //List<string> adlar = new List<string> { "ali", "veli" };
 
-            HttpContext.Session.Set("adlar", adlar);
+            //HttpContext.Session.Set("adlar", adlar);
 
             return View(_homeIndexViewModelService.GetHomeIndexViewModel(cid, p ?? 1, Constants.ITEMS_PER_PAGE));//null ise 1 i gir
         }
 
-        public IActionResult Privacy()
+        public IActionResult Privacy([FromServices] IBasketService basketService)
         {
-            ViewBag.ad = HttpContext.Session.GetString("adlar");
-            List<string> isimler = HttpContext.Session.Get<List<string>>("adlar");
+            basketService.AddItemToBasket(1, "Kola", 3.5m, "", 3);
+            ViewBag.items = basketService.BasketItems;
+            //ViewBag.ad = HttpContext.Session.GetString("adlar");
+            //List<string> isimler = HttpContext.Session.Get<List<string>>("adlar");
             
             return View();
         }
